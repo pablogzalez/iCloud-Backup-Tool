@@ -43,10 +43,10 @@ Después de configurar tus credenciales, puedes ejecutar el script para realizar
 Después de configurar tus credenciales, puedes ejecutar el script con diferentes argumentos según tus necesidades:
 
 - Realizar un backup del álbum 'Todas las Fotos' y guardarlas en el directorio '/backup/icloud':
-python icloud_backup.py --album "All Photos" --destination "/backup/icloud"
+<p>python icloud_backup.py --album "All Photos" --destination "/backup/icloud"</p>
 
 - Realizar un backup del álbum 'Vacaciones' y eliminar los videos después del backup:
-python icloud_backup.py --album "Vacaciones" --destination "/backup/icloud" --delete-videos
+<p>python icloud_backup.py --album "Vacaciones" --destination "/backup/icloud" --delete-videos</p>
 
 🤝 Contribuyendo
 Se aceptan pull requests. Para cambios importantes, por favor abre un issue primero para discutir lo que te gustaría cambiar.
