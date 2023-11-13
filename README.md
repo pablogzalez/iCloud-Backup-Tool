@@ -39,6 +39,14 @@
 Después de configurar tus credenciales, puedes ejecutar el script para realizar backups y enviar notificaciones a Telegram.
 
 🔍 Modifica los argumentos del script según tus necesidades para personalizar el proceso de backup.
+### Ejemplos de Lanzamiento
+Después de configurar tus credenciales, puedes ejecutar el script con diferentes argumentos según tus necesidades:
+
+- Realizar un backup del álbum 'Todas las Fotos' y guardarlas en el directorio '/backup/icloud':
+python icloud_backup.py --album "All Photos" --destination "/backup/icloud"
+
+- Realizar un backup del álbum 'Vacaciones' y eliminar los videos después del backup:
+python icloud_backup.py --album "Vacaciones" --destination "/backup/icloud" --delete-videos
 
 🤝 Contribuyendo
 Se aceptan pull requests. Para cambios importantes, por favor abre un issue primero para discutir lo que te gustaría cambiar.
