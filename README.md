@@ -25,10 +25,10 @@
 ### Instalación
 
 1. 📥 Clona este repositorio:
-<p>   git clone https://github.com/tu-usuario/iCloud-Backup-Script.git</p>
+<p>   git clone https://github.com/tu-usuario/iCloud-Backup-Tool.git</p>
 
 2. 📂 Navega al directorio del proyecto:
-<p>   cd iCloud-Backup-Script</p>
+<p>   cd iCloud-Backup-Tool</p>
 
 3. 🖥️ Instala las dependencias requeridas:
 <p>   pip install -r requirements.txt</p>
