@@ -15,6 +15,7 @@
 - 📂 Efficient management of iCloud albums, including the option to empty the 'Recently Deleted' album.
 - 🛠️ Support for iCloud's two-factor authentication.
 - ⚙️ Customizable Telegram notification feature.
+- ⚙️ Customizable iCloud video deleting feature.
 
 ## 🔧 Configuration
 
