@@ -3,56 +3,56 @@
 </p>
 
 <p align="center" style="color: #333;">
-  Este repositorio contiene un script para realizar backups automáticos de fotos y videos desde iCloud a un almacenamiento local, con notificaciones de Telegram y manejo de álbumes de iCloud.
+  This repository contains a script for automatic backups of photos and videos from iCloud to local storage, with Telegram notifications and iCloud album management.
 </p>
 
 ---
 
-## 🌟 Características
+## 🌟 Features
 
-- 🚀 Backup automático de fotos y videos desde **iCloud** a almacenamiento local.
-- 📲 Notificaciones a través de **Telegram** sobre el progreso y el resumen del backup.
-- 📂 Manejo eficiente de álbumes en iCloud, incluyendo la opción de vaciar el álbum 'Borrados recientemente'.
-- 🛠️ Soporte para autenticación de dos factores de iCloud.
+- 🚀 Automatic backup of photos and videos from **iCloud** to local storage.
+- 📲 Notifications via **Telegram** about the progress and summary of the backup.
+- 📂 Efficient management of iCloud albums, including the option to empty the 'Recently Deleted' album.
+- 🛠️ Support for iCloud's two-factor authentication.
 
-## 🔧 Configuración
+## 🔧 Configuration
 
-### Prerrequisitos
+### Prerequisites
 
 - 🐍 Python 3.x.
-- 🔐 Credenciales de iCloud y un Token de Telegram.
+- 🔐 iCloud credentials and a Telegram Token.
 
-### Instalación
+### Installation
 
-1. 📥 Clona este repositorio:
-<p>   git clone https://github.com/tu-usuario/iCloud-Backup-Tool.git</p>
+1. 📥 Clone this repository:
+<p>   git clone https://github.com/your-user/iCloud-Backup-Tool.git</p>
 
-2. 📂 Navega al directorio del proyecto:
+2. 📂 Navigate to the project directory:
 <p>   cd iCloud-Backup-Tool</p>
 
-3. 🖥️ Instala las dependencias requeridas:
+3. 🖥️ Install the required dependencies:
 <p>   pip install -r requirements.txt</p>
 
-4. ⚙️ Configura tus credenciales de iCloud y Telegram en el script.
+4. ⚙️ Set up your iCloud and Telegram credentials in the script.
 
-## 📖 Uso
-Después de configurar tus credenciales, puedes ejecutar el script para realizar backups y enviar notificaciones a Telegram.
+## 📖 Usage
+After setting up your credentials, you can run the script to perform backups and send notifications to Telegram.
 
-🔍 Modifica los argumentos del script según tus necesidades para personalizar el proceso de backup.
-### Ejemplos de Lanzamiento
-Después de configurar tus credenciales, puedes ejecutar el script con diferentes argumentos según tus necesidades:
+🔍 Modify the script's arguments according to your needs to customize the backup process.
+### Launch Examples
+After setting up your credentials, you can run the script with different arguments according to your needs:
 
-- Realizar un backup del álbum 'Todas las Fotos' y guardarlas en el directorio '/backup/icloud':
+- Perform a backup of the 'All Photos' album and save them in the '/backup/icloud' directory:
 <p>python icloud_backup.py --album "All Photos" --destination "/backup/icloud"</p>
 
-- Realizar un backup del álbum 'Vacaciones' y eliminar los videos después del backup:
-<p>python icloud_backup.py --album "Vacaciones" --destination "/backup/icloud" --delete-videos</p>
+- Perform a backup of the 'Vacation' album and delete the videos after the backup:
+<p>python icloud_backup.py --album "Vacation" --destination "/backup/icloud" --delete-videos</p>
 
-🤝 Contribuyendo
-Se aceptan pull requests. Para cambios importantes, por favor abre un issue primero para discutir lo que te gustaría cambiar.
+🤝 Contributing
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
-🧐 Asegúrate de actualizar las pruebas según sea apropiado.
+🧐 Make sure to update the tests as appropriate.
 
 <p align="center">
-  Creado con 💖 por <a href="https://github.com/pablogzalez">Pablo González</a>
+  Created with 💖 by <a href="https://github.com/pablogzalez">Pablo González</a>
 </p>
