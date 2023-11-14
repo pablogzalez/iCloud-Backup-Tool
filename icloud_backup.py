@@ -165,15 +165,17 @@ def generate_summary_message():
 def main():
     parser = argparse.ArgumentParser(description='Herramienta de backup de fotos y videos de iCloud')
     # Argumentos existentes
-    parser.add_argument('--config', default='/script-backup/config.ini', help='Archivo de configuración (por defecto: "/script-backup/config.in")')
+    parser.add_argument('--config', default='/script-backup/config.ini', help='Archivo de configuración (por defecto: "/script-backup/config.ini")')
     parser.add_argument('--album', default='All Photos', help='Nombre del álbum de iCloud (por defecto: "All Photos")')
-    parser.add_argument('--destination', default='/backup-icloud', help='Directorio de destino para el backup (por defecto: "/backup-icloudd")')
-    # Nuevo argumento para decidir si eliminar videos
+    parser.add_argument('--destination', default='/backup-icloud', help='Directorio de destino para el backup (por defecto: "/backup-icloud")')
     parser.add_argument('--delete-videos', action='store_true', help='Eliminar videos de iCloud después del backup')
+    # Nuevo argumento para controlar el envío de mensajes de Telegram
+    parser.add_argument('--send-telegram', action='store_true', help='Enviar un mensaje de Telegram al finalizar (por defecto: no se envía)')
+
     args = parser.parse_args()
 
     # Información de Telegram (configura estas variables con tus propios valores)
-    TELEGRAM_TOKEN = 'TU_TOKEN_DE_TELEGRAM' # 
+    TELEGRAM_TOKEN = 'TU_TOKEN_DE_TELEGRAM'
     TELEGRAM_CHAT_ID = 'TU_CHAT_ID_DE_TELEGRAM'
 
     try:
@@ -181,15 +183,23 @@ def main():
         api = authenticate(username, password)
         backup_photos_to_local(api, args.album, args.destination)
 
-        # Comprobar si el usuario desea eliminar videos
         if args.delete_videos:
             delete_backed_up_videos(api, args.album, args.destination)
 
         empty_recently_deleted(api)
         summary_message = generate_summary_message()
-        send_telegram_message(TELEGRAM_TOKEN, TELEGRAM_CHAT_ID, summary_message + "\n🟢 Proceso completado exitosamente.")
+
+        # Enviar un mensaje de Telegram si el argumento --send-telegram es usado
+        if args.send_telegram:
+            send_telegram_message(TELEGRAM_TOKEN, TELEGRAM_CHAT_ID, summary_message + "\n🟢 Proceso completado exitosamente.")
+        else:
+            print(summary_message + "\n🟢 Proceso completado exitosamente.")
     except Exception as e:
-        send_telegram_message(TELEGRAM_TOKEN, TELEGRAM_CHAT_ID, f"🔴 Hubo un error: {str(e)}")
+        error_message = f"🔴 Hubo un error: {str(e)}"
+        if args.send_telegram:
+            send_telegram_message(TELEGRAM_TOKEN, TELEGRAM_CHAT_ID, error_message)
+        else:
+            print(error_message)
 
 if __name__ == "__main__":
     main()
