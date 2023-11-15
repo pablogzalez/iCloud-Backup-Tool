@@ -35,7 +35,7 @@
 3. 🖥️ Install the required dependencies:
 <p>   pip install -r requirements.txt</p>
 
-4. ⚙️ Set up your iCloud credentials in the script. Optionally, set up Telegram credentials for notifications.
+4. ⚙️ Set up your iCloud credentials in the .env file. Optionally, set up Telegram credentials for notifications.
 
 ## 📖 Usage
 After setting up your credentials, you can run the script to perform backups. Optionally, you can enable Telegram notifications.
