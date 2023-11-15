@@ -1,10 +1,10 @@
 import argparse
 import os
-import configparser
 from pyicloud import PyiCloudService
 from pyicloud.exceptions import PyiCloudAPIResponseException
 from termcolor import colored
 import requests
+from dotenv import load_dotenv
 
 # Diccionario global para almacenar estadísticas
 stats = {
@@ -28,14 +28,6 @@ def send_telegram_message(token, chat_id, text):
     }
     response = requests.post(BASE_URL, data=payload)
     return response.json()
-
-# Función para obtener credenciales de iCloud desde un archivo de configuración
-def get_icloud_credentials_from_config(filename):
-    """Retrieve iCloud credentials from a config file."""
-    print(colored(f"🔧 Leyendo configuración desde {filename}...", "cyan"))
-    config = configparser.ConfigParser()
-    config.read(filename)
-    return config['ICloud']['username'], config['ICloud']['password']
 
 # Función para autenticarse en iCloud
 def authenticate(username, password):
@@ -174,13 +166,14 @@ def main():
 
     args = parser.parse_args()
 
+    load_dotenv()
+
     # Información de Telegram (configura estas variables con tus propios valores)
-    TELEGRAM_TOKEN = 'TU_TOKEN_DE_TELEGRAM'
-    TELEGRAM_CHAT_ID = 'TU_CHAT_ID_DE_TELEGRAM'
+    TELEGRAM_TOKEN = os.environ.get('TELEGRAM_TOKEN')
+    TELEGRAM_CHAT_ID = os.environ.get('TELEGRAM_CHAT_ID')
 
     try:
-        username, password = get_icloud_credentials_from_config(args.config)
-        api = authenticate(username, password)
+        api = authenticate(os.environ.get('IC_USER'), os.environ.get('IC_PASS'))
         backup_photos_to_local(api, args.album, args.destination)
 
         if args.delete_videos:
