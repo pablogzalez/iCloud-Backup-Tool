@@ -1,10 +1,10 @@
 import argparse
 import os
-import configparser
 from pyicloud import PyiCloudService
 from pyicloud.exceptions import PyiCloudAPIResponseException
 from termcolor import colored
 import requests
+from dotenv import load_dotenv
 
 # Diccionario global para almacenar estadísticas
 stats = {
@@ -28,14 +28,6 @@ def send_telegram_message(token, chat_id, text):
     }
     response = requests.post(BASE_URL, data=payload)
     return response.json()
-
-# Función para obtener credenciales de iCloud desde un archivo de configuración
-def get_icloud_credentials_from_config(filename):
-    """Retrieve iCloud credentials from a config file."""
-    print(colored(f"🔧 Leyendo configuración desde {filename}...", "cyan"))
-    config = configparser.ConfigParser()
-    config.read(filename)
-    return config['ICloud']['username'], config['ICloud']['password']
 
 # Función para autenticarse en iCloud
 def authenticate(username, password):
@@ -163,9 +155,9 @@ def generate_summary_message():
 
 # Función principal
 def main():
+    send_telegram_message_ready = False
     parser = argparse.ArgumentParser(description='Herramienta de backup de fotos y videos de iCloud')
     # Argumentos existentes
-    parser.add_argument('--config', default='/script-backup/config.ini', help='Archivo de configuración (por defecto: "/script-backup/config.ini")')
     parser.add_argument('--album', default='All Photos', help='Nombre del álbum de iCloud (por defecto: "All Photos")')
     parser.add_argument('--destination', default='/backup-icloud', help='Directorio de destino para el backup (por defecto: "/backup-icloud")')
     parser.add_argument('--delete-videos', action='store_true', help='Eliminar videos de iCloud después del backup')
@@ -174,13 +166,18 @@ def main():
 
     args = parser.parse_args()
 
+    load_dotenv()
+
     # Información de Telegram (configura estas variables con tus propios valores)
-    TELEGRAM_TOKEN = 'TU_TOKEN_DE_TELEGRAM'
-    TELEGRAM_CHAT_ID = 'TU_CHAT_ID_DE_TELEGRAM'
+    TELEGRAM_TOKEN = os.environ.get('TELEGRAM_TOKEN')
+    TELEGRAM_CHAT_ID = os.environ.get('TELEGRAM_CHAT_ID')
 
     try:
-        username, password = get_icloud_credentials_from_config(args.config)
-        api = authenticate(username, password)
+        if os.environ.get('IC_USER') is None or os.environ.get('IC_PASS') is None:
+            print(colored("🔴 Cannot read credentials from .env. Aborting...", "red"))
+            return
+        
+        api = authenticate(os.environ.get('IC_USER'), os.environ.get('IC_PASS'))
         backup_photos_to_local(api, args.album, args.destination)
 
         if args.delete_videos:
@@ -190,13 +187,16 @@ def main():
         summary_message = generate_summary_message()
 
         # Enviar un mensaje de Telegram si el argumento --send-telegram es usado
-        if args.send_telegram:
+        if args.send_telegram and TELEGRAM_TOKEN is not None and TELEGRAM_CHAT_ID is not None:
+            send_telegram_message_ready = True
+        
+        if send_telegram_message_ready:
             send_telegram_message(TELEGRAM_TOKEN, TELEGRAM_CHAT_ID, summary_message + "\n🟢 Proceso completado exitosamente.")
         else:
             print(summary_message + "\n🟢 Proceso completado exitosamente.")
     except Exception as e:
         error_message = f"🔴 Hubo un error: {str(e)}"
-        if args.send_telegram:
+        if send_telegram_message_ready:
             send_telegram_message(TELEGRAM_TOKEN, TELEGRAM_CHAT_ID, error_message)
         else:
             print(error_message)

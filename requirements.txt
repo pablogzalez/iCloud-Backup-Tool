@@ -1,6 +1,5 @@
 argparse
-os
-configparser
 pyicloud
 requests
 termcolor
+python_dotenv
