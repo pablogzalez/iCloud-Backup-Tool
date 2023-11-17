@@ -155,9 +155,9 @@ def generate_summary_message():
 
 # Función principal
 def main():
+    send_telegram_message_ready = False
     parser = argparse.ArgumentParser(description='Herramienta de backup de fotos y videos de iCloud')
     # Argumentos existentes
-    parser.add_argument('--config', default='/script-backup/config.ini', help='Archivo de configuración (por defecto: "/script-backup/config.ini")')
     parser.add_argument('--album', default='All Photos', help='Nombre del álbum de iCloud (por defecto: "All Photos")')
     parser.add_argument('--destination', default='/backup-icloud', help='Directorio de destino para el backup (por defecto: "/backup-icloud")')
     parser.add_argument('--delete-videos', action='store_true', help='Eliminar videos de iCloud después del backup')
@@ -173,6 +173,10 @@ def main():
     TELEGRAM_CHAT_ID = os.environ.get('TELEGRAM_CHAT_ID')
 
     try:
+        if os.environ.get('IC_USER') is None or os.environ.get('IC_PASS') is None:
+            print(colored("🔴 Cannot read credentials from .env. Aborting...", "red"))
+            return
+        
         api = authenticate(os.environ.get('IC_USER'), os.environ.get('IC_PASS'))
         backup_photos_to_local(api, args.album, args.destination)
 
@@ -183,13 +187,16 @@ def main():
         summary_message = generate_summary_message()
 
         # Enviar un mensaje de Telegram si el argumento --send-telegram es usado
-        if args.send_telegram:
+        if args.send_telegram and TELEGRAM_TOKEN is not None and TELEGRAM_CHAT_ID is not None:
+            send_telegram_message_ready = True
+        
+        if send_telegram_message_ready:
             send_telegram_message(TELEGRAM_TOKEN, TELEGRAM_CHAT_ID, summary_message + "\n🟢 Proceso completado exitosamente.")
         else:
             print(summary_message + "\n🟢 Proceso completado exitosamente.")
     except Exception as e:
         error_message = f"🔴 Hubo un error: {str(e)}"
-        if args.send_telegram:
+        if send_telegram_message_ready:
             send_telegram_message(TELEGRAM_TOKEN, TELEGRAM_CHAT_ID, error_message)
         else:
             print(error_message)
